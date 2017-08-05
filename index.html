@@ -24,8 +24,99 @@
     <body>
         <div class="reveal">
             <div class="slides">
-                <section>Slide 1</section>
-                <section>Slide 2</section>
+                <section>
+                    <h3>Kryptografia (<i>cryptography</i>)</h3>
+                    <ul>
+                        <li>
+                        Tieteenhaara, jossa kehitetään menetelmiä viestien turvalliseen välittämiseen
+                        osapuolelta toiselle.
+                        </li>
+                        <li>
+                        Viestien salaamiseen ja purkamiseen on vino pino algoritmeja. Yksinkertaisimmasta päästä ROT-13.
+                        </li>
+                        <li>
+                        Salaaminen ja purkaminen vaatii avaimen, joka on molempien osapuolten tiedossa, ja joka ei saa vaarantua.
+                        </li>
+                        <li>
+                        ROT-13 on symmetrinen salaus, eli sama avain salaa ja purkaa viestin.
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Julkisen avaimen kryptografia (<i>public key cryptography</i>)</h3>
+                    <ul>
+                        <li>Yksi avain salaamiseen ja toinen purkamiseen &rarr; epäsymmetrinen salaus</li>
+                            <ul>
+                                <li>Julkinen avain voidaan julkistaa kaikille kiinnostuneille</li>
+                                <li>Yksityinen avain täytyy pitää salassa</li>
+                            </ul>
+                        <li>Julkinen avain muodostetaan yksityisen avaimen pohjalta</li>
+                        <li><b>Oletus</b>: Julkisesta avaimesta ei voi johtaa yksityistä avainta (nykyisellä laskentateholla järkevässä ajassa)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Julkisen avaimen kryptografian operaatiot</h3>
+                    <ul>
+                        <li>Viestin salaus ja salauksen purku</li>
+                            <ul>
+                                <li>Se tavallinen tapaus, <i>man in the middle</i> ei saa iloa kaappaamastaan salatusta viestistä</li>
+                            </ul>
+                        <li>Viestin (digitaalinen) allekirjoitus</li>
+                            <ul>
+                                <li>Viestin lähettämisen jälkeen tehdyt muutokset viestissä jäävät auttamatta kiinni</li>
+                                <li>Huom! Ei salaa viestiä mitenkään</li>
+                            </ul>
+                </section>
+                <section>
+                    <h3>Julkisen avaimen algoritmeja</h3>
+                    <ul>
+                        <li>Muodostavat kryptografian matemaattisen perustan</li>
+                        <li>RSA (<i>Rivest-Shamir-Adleman, 1977</i>), salaus ja allekirjoitus</li>
+                            <ul>
+                                <li>Yhtiö <i>RSA Security LLC.</i> tekee algoritmilla menestyksekästä liiketoimintaa</li>
+                            </ul>
+                        <li>DSA (<i>Digital Signature Algorithm, 1991</i>), vain allekirjoitus
+                        <li>...ja muitakin luonnollisesti on, esim. ECC (<i>Elliptic Curve Cryptography</i>), seuraavan sukupolven algoritmiperhe
+                    </ul>
+                </section>
+                <section>
+                    <h3>RSA-avain</h3>
+                    <ul>
+                        <li>Lasketaan kaksi suurta alkulukua (tähän löytyy tehokkaita algoritmeja)</li>
+                        <li>Lasketaan alkulukujen tulo ja pari muuta arvoa niiden perusteella</li>
+                        <li>Rankasti yksinkertaistaen alkulukupari on yksityinen avain ja niiden tulo on julkinen avain
+                        <li><b>Oletus</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa</li>
+                            <ul>
+                                <li>Kvanttitietokoneet tulevat muuttamaan tilanteen?</li>
+                            </ul>
+                        <li>Mitä isommat alkuluvut, sitä turvallisempi avain on (1k, 2k, 4k, 8k, ...)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Salaus ja purku</h3>
+                    <img src="http://www.mcseven.me/wp-content/uploads/2009/05/rsa_encryption.png" />
+                </section>
+                <section>
+                    <h3>Allekirjoitus (1/2)</h3>
+                    <img src="http://www.mcseven.me/wp-content/uploads/2009/05/rsa_signing.png" />
+                </section>
+                <section>
+                    <h3>Allekirjoitus (2/2)</h3>
+                    <ul>
+                        <li>Allekirjoitettavaa dataa ei allekirjoiteta sellaisenaan (hidasta, allekirjoitus olisi iso)</li>
+                        <li>Datasta lasketaan sen sijaan tiiviste (<i>hash, digest</i>), ja tiiviste allekirjoitetaan
+                            <ul>
+                                <li>Tiivistealgoritmeja esim. MD5, SHA-1, SHA-2</li>
+                            </ul>
+                        <li>Allekirjoituksen verifioija laskee myös saamastaan datasta tiivisteen, ja vertaa sitä allekirjoitettuun tiivisteeseen</li>
+                        <li><b>Oletus</b>: tiivistealgoritmi on yksisuuntainen hajautusfunktio:
+                            <ul>
+                                <li>Tiivisteestä ei voi päätellä mitään datasta, josta se on laskettu</li>
+                                <li>Pieni datan muutos aiheuttaa ison muutoksen tiivisteessä</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
             </div>
         </div>
 
