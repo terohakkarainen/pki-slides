@@ -7,7 +7,7 @@
         <title>reveal.js</title>
 
         <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="css/theme/sky.css">
 
         <!-- Theme used for syntax highlighting of code -->
         <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -32,7 +32,7 @@
                         osapuolelta toiselle.
                         </li>
                         <li>
-                        Viestien salaamiseen ja purkamiseen on vino pino algoritmeja. Yksinkertaisimmasta päästä ROT-13.
+                        Viestien salaamiseen ja purkamiseen on vino pino algoritmeja. Yksinkertaisimmasta päästä esim. ROT-13.
                         </li>
                         <li>
                         Salaaminen ja purkaminen vaatii avaimen, joka on molempien osapuolten tiedossa, ja joka ei saa vaarantua.
@@ -51,7 +51,7 @@
                                 <li>Yksityinen avain täytyy pitää salassa</li>
                             </ul>
                         <li>Julkinen avain muodostetaan yksityisen avaimen pohjalta</li>
-                        <li><b>Oletus</b>: Julkisesta avaimesta ei voi johtaa yksityistä avainta (nykyisellä laskentateholla järkevässä ajassa)</li>
+                        <li><b>Oletus 1</b>: Julkisesta avaimesta ei voi johtaa yksityistä avainta (nykyisellä laskentateholla järkevässä ajassa)</li>
                     </ul>
                 </section>
                 <section>
@@ -63,8 +63,9 @@
                             </ul>
                         <li>Viestin (digitaalinen) allekirjoitus</li>
                             <ul>
-                                <li>Viestin lähettämisen jälkeen tehdyt muutokset viestissä jäävät auttamatta kiinni</li>
-                                <li>Huom! Ei salaa viestiä mitenkään</li>
+                                <li>Viestin allekirjoittamisen jälkeen tehdyt muutokset viestissä jäävät auttamatta kiinni</li>
+                                <li>Viestin allekirjoittaja on <i>kiistämättömästi</i> tehnyt allekirjoituksen.</li>
+                                <li>Huom! Allekirjoitus ei salaa viestiä mitenkään</li>
                             </ul>
                 </section>
                 <section>
@@ -85,7 +86,7 @@
                         <li>Lasketaan kaksi suurta alkulukua (tähän löytyy tehokkaita algoritmeja)</li>
                         <li>Lasketaan alkulukujen tulo ja pari muuta arvoa niiden perusteella</li>
                         <li>Rankasti yksinkertaistaen alkulukupari on yksityinen avain ja niiden tulo on julkinen avain
-                        <li><b>Oletus</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa</li>
+                        <li><b>Oletus 2</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa</li>
                             <ul>
                                 <li>Kvanttitietokoneet tulevat muuttamaan tilanteen?</li>
                             </ul>
@@ -109,13 +110,103 @@
                                 <li>Tiivistealgoritmeja esim. MD5, SHA-1, SHA-2</li>
                             </ul>
                         <li>Allekirjoituksen verifioija laskee myös saamastaan datasta tiivisteen, ja vertaa sitä allekirjoitettuun tiivisteeseen</li>
-                        <li><b>Oletus</b>: tiivistealgoritmi on yksisuuntainen hajautusfunktio:
+                        <li><b>Oletus 3</b>: tiivistealgoritmi on yksisuuntainen hajautusfunktio:
                             <ul>
                                 <li>Tiivisteestä ei voi päätellä mitään datasta, josta se on laskettu</li>
                                 <li>Pieni datan muutos aiheuttaa ison muutoksen tiivisteessä</li>
+                                <li>Sama tiiviste kahdesta eri datasta on hyvin epätodennäköinen</li>
                             </ul>
                         </li>
                     </ul>
+                </section>
+                <section>
+                    <h3>Varmenne</h3>
+                    <div>
+                        <ul>
+                            <li><i>X.509-standardi</i> määrittelee formaatin (ASN.1-enkoodattua binääridataa)</li>
+                            <li>Varmenne on myöntäjänsä allekirjoittama dokumentti
+                                <ul>
+                                    <li>Myöntäjä luottaa siihen, että varmenteen omistajalla on hallussaan julkista avainta vastaava yksityinen avain</li>
+                                </ul>   
+                            </li>
+                            <li>Varmenne sisältää vain julkista tietoa (ei yksityistä avainta):
+                                <ul>
+                                    <li>Julkinen avain siitä avainparista, jonka varmenne varmentaa</li>
+                                    <li>Myöntäjän allekirjoitusavaimen julkinen osa</li>
+                                    <li>Myöntäjän tekemä allekirjoitus</li>
+                                    <li>Metadataa (käyttötarkoitus, voimassaoloaika, sulkulistan sijainti, jne.)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Varmenneketju</h3>
+                    <div>
+                        <ul>
+                            <li>Varmenteella on aina yksi myöntäjä</li>
+                            <li>Myöntäjävarmenteellakin on (yleensä) myöntäjä</li>
+                            <li>Ketjun päästä löytyy juurivarmenne, jonka allekirjoittaja on se itse (<i>self-signed</i>)</li>
+                            <li>Varmenteet juurivarmenteesta lehtivarmenteeseen (end-entity certificate) muodostavat varmenneketjun</li>
+                            <li>Varmenteen tarkistajalla pitää olla tiedossaan koko ketju</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>PKI (<i>Public Key Infrastructure</i>)</h3>
+                    <ul>
+                        <li>Infra, jolla mahdollistetaan varmenteiden luotettava käyttäminen ja elinkaaren hallinta</li>
+                    </ul>
+                    <img src="Public-Key-Infrastructure.svg" style="width: 60%; height: 60%;" />
+                </section>
+                <section>
+                    <h3>TLS (<i>Transport Layer Security</i>)</h3>
+                    <div>
+                        <ul>
+                            <li>Oli ennen SSL (<i>Secure Sockets Layer</i>)</li>
+                            <li>TLS-kättelyssä client ja server lähettävät toisilleen RSA-allekirjoitettuja viestejä.</li>
+                            <li>Allekirjoituksien verifiointiin tarvitaan varmenneketjuja:
+                                <ul>
+                                    <li>Server-side authentication: Client tarkistaa serverin ketjun</li>
+                                    <li>Mutual authentication: Sekä client että server tarkistavat toistensa ketjut</li>
+                                </ul>
+                            </li>
+                            <li>Itse dataliikennettä ei salata RSA:lla, koska se olisi tehotonta ja hidasta</li>
+                            <li>Kättelyssä sovitaan pienempi väliaikainen istuntoavain, jolla liikenne oikeasti salataan.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Avainten varastointi</h3>
+                    <div>
+                        <ul>
+                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Java Keytool</h3>
+                    <div>
+                        <ul>
+                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>OpenSSL</h3>
+                    <div>
+                        <ul>
+                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Entäs ne oletukset?</h3>
+                    <div>
+                        <ul>
+                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                        </ul>
+                    </div>
                 </section>
             </div>
         </div>
@@ -133,7 +224,8 @@
                     { src: 'plugin/markdown/markdown.js' },
                     { src: 'plugin/notes/notes.js', async: true },
                     { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-                ]
+                ],
+                transition: 'convex'
             });
         </script>
     </body>
