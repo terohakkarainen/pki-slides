@@ -7,7 +7,7 @@
         <title>reveal.js</title>
 
         <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/sky.css">
+        <link rel="stylesheet" href="css/theme/serif.css">
 
         <!-- Theme used for syntax highlighting of code -->
         <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,6 +24,11 @@
     <body>
         <div class="reveal">
             <div class="slides">
+                <section>
+                    <h2>PKI-tutoriaali</h2>
+                    <h3>Tero Hakkarainen</h3>
+                    <a href="https://github.com/terohakkarainen/pki-slides" target="_blank">GitHub</a>
+                </section>
                 <section>
                     <section>
                         <h3>Kryptografia (<i>cryptography</i>)</h3>
@@ -262,26 +267,62 @@
                     </div>
                 </section>
                 <section>
-                    <h3>Java Keytool</h3>
-                    <div>
-                        <ul>
-                            <li>Tulee JDK:n mukana, komento "keytool"</li>
-                            <li>Minimaalinen setti operaatioita, joilla tulee toimeen</li>
-                            <li>Tukee JKS:ia (yllätys?), sekä rajatusti PKCS#12:a</li>
-                            <li>Kohtuullisen hyvä komentorivi-help</li>
-                        </ul>
-                    </div>
+                    <section>
+                        <h3>Java Keytool</h3>
+                        <div>
+                            <ul>
+                                <li>Tulee JDK:n mukana, komento "keytool"</li>
+                                <li>Minimaalinen setti operaatioita, joilla tulee toimeen</li>
+                                <li>Tukee JKS:ia (yllätys?), sekä rajatusti PKCS#12:a</li>
+                                <li>Kohtuullisen hyvä komentorivi-help</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>Keytool-komentoja</h3>
+                        <div>
+                            <ul>
+                                <li>Luo uusi keystore privaattiavaimella: keytool -genkeypair -alias foo -keyalg rsa -keystore foo.jks -storepass passu</li>
+                                <li>Luo varmennepyyntö: keytool -certreq -alias foo -keystore foo.jks -file out.csr</li>
+                                <li>Importoi CA-varmenne: keytool -importcert -keystore foo.jks -trustcacerts -file ca.cer</li>
+                                <li>Importoi CA:lta saatu varmenne: keytool -importcert -alias foo -keystore foo.jks -trustcacerts -file out.cer</li>
+                                <li>Listaa keystoren sisältö: keytool -list -keystore foo.jks</li>
+                            </ul>
+                        </div>
+                    </section>
                 </section>
                 <section>
-                    <h3>OpenSSL</h3>
-                    <div>
-                        <ul>
-                            <li>Linuxissa lähes aina mukana, Windowsille pitää asentaa itse</li>
-                            <li>Varsinainen monikäyttölinkkuveitsi, hiukan hankala käyttää</li>
-                            <li>Tukee vain PKCS#12:a</li>
-                            <li>Käyttö vaatii lähes aina nettimanuaalin tuekseen</li>
-                        </ul>
-                    </div>
+                    <section>
+                        <h3>OpenSSL</h3>
+                        <div>
+                            <ul>
+                                <li>Linuxissa lähes aina mukana, Windowsille pitää asentaa itse</li>
+                                <li>Hiukan hankalasti käytettävä monikäyttölinkkuveitsi (konversiot, protokollatestaus, asn.1-dekooderi, jne.)</li>
+                                <li>Tukee avainvarastoista vain PKCS#12:a, lisäksi avain- ja varmennetiedostojen operointia</li>
+                                <li>Käyttö vaatii lähes aina nettimanuaalin tuekseen</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>OpenSSL-komentoja (1/2)</h3>
+                        <div>
+                            <ul>
+                                <li>Luo uusi avainpari ja varmennepyyntö: openssl req -out out.csr -new -newkey rsa:2048 -nodes -keyout private.key</li>
+                                <li>Näytä avaimen tiedot: openssl rsa -in private.key -text</li>
+                                <li>Näytä varmennepyynnön tiedot: openssl req -in out.csr -text</li>
+                                <li>Näytä varmenteen tiedot: openssl x509 -in sertti.cer -inform der -text</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>OpenSSL-komentoja (2/2)</h3>
+                        <div>
+                            <ul>
+                                <li>Luo PKCS12-keystore avaimesta ja varmenteesta: openssl pkcs12 -export -out out.p12 -inkey private.key -in cert.cer -certfile ca.cer</li>
+                                <li>Listaa PKCS12-keystoren sisältö: openssl pkcs12 -in out.p12 -nokeys</li>
+                            </ul>
+                        </div>
+                    </section>
                 </section>
                 <section>
                     <h3>Entäs ne oletukset? (1/2)</h3>
@@ -289,7 +330,7 @@
                         <ul>
                             <li><b>Oletus 1</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa
                                 <ul>
-                                    <li>Pitää paikkansa, jos avainkoko on riittävä (vrt. suositukset)</li>
+                                    <li>Pitää paikkansa, jos avainkoko on riittävä (vrt. suositukset, tällä hetkellä 1k on jo deprekoitu)</li>
                                     <lI>Kvanttilaskenta...?</li>
                                 </ul>
                             </li>
@@ -336,6 +377,7 @@
                 ],
                 transition: 'convex'
             });
+            Reveal.configure({ slideNumber: true });
         </script>
     </body>
 </html>
