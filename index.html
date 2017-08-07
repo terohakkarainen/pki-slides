@@ -25,35 +25,48 @@
         <div class="reveal">
             <div class="slides">
                 <section>
-                    <h3>Kryptografia (<i>cryptography</i>)</h3>
-                    <ul>
-                        <li>
-                        Tieteenhaara, jossa kehitetään menetelmiä viestien turvalliseen välittämiseen
-                        osapuolelta toiselle.
-                        </li>
-                        <li>
-                        Viestien salaamiseen ja purkamiseen on vino pino algoritmeja. Yksinkertaisimmasta päästä esim. ROT-13.
-                        </li>
-                        <li>
-                        Salaaminen ja purkaminen vaatii avaimen, joka on molempien osapuolten tiedossa, ja joka ei saa vaarantua.
-                        </li>
-                        <li>
-                        ROT-13 on symmetrinen salaus, eli sama avain salaa ja purkaa viestin.
-                        </li>
-                    </ul>
+                    <section>
+                        <h3>Kryptografia (<i>cryptography</i>)</h3>
+                        <ul>
+                            <li>
+                            Tieteenhaara, jossa kehitetään menetelmiä viestien turvalliseen välittämiseen
+                            osapuolelta toiselle.
+                            </li>
+                            <li>
+                            Viestien salaamiseen ja salauksen purkamiseen on vino pino algoritmeja. Yksinkertaisimmasta päästä esim. ROT-13.
+                            </li>
+                            <li>
+                            ROT-13 on symmetrinen salaus, eli sama avain salaa ja purkaa viestin. Näin ollen avain ei saa vaarantua, tai tiedon luottamuksellisuus on menetetty.
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Pähkinä</h3>
+                        <div>
+                            Avaa ROT-5-salattu viesti "jiafwi"
+                        </div>
+                    </section>
                 </section>
                 <section>
                     <h3>Julkisen avaimen kryptografia (<i>public key cryptography</i>)</h3>
                     <ul>
+                        <li><a href="https://en.wikipedia.org/wiki/PKCS">PKCS-standardi</a> (<i>Public Key Crypgraphy Standards</i>)</li>
                         <li>Yksi avain salaamiseen ja toinen purkamiseen &rarr; epäsymmetrinen salaus</li>
                             <ul>
-                                <li>Julkinen avain voidaan julkistaa kaikille kiinnostuneille</li>
+                                <li>Julkinen avain voidaan julkistaa</li>
                                 <li>Yksityinen avain täytyy pitää salassa</li>
                             </ul>
                         <li>Julkinen avain muodostetaan yksityisen avaimen pohjalta</li>
-                        <li><b>Oletus 1</b>: Julkisesta avaimesta ei voi johtaa yksityistä avainta (nykyisellä laskentateholla järkevässä ajassa)</li>
                     </ul>
                 </section>
+                <section>
+                    <h3>Julkisen avaimen kryptografian hyödyntäminen</h3>
+                    <ul>
+                        <li>Tietoliikenteen salaaminen Internetin yli</li>
+                        <li>Digitaalisen tiedon alkuperän varmistaminen: sovellusten ja päivitysten jako, dokumenttien eheys, ...</li>
+                        <li>Vahva autentikaatio</li>
+                    </ul>
+                </section>            
                 <section>
                     <h3>Julkisen avaimen kryptografian operaatiot</h3>
                     <ul>
@@ -83,14 +96,11 @@
                 <section>
                     <h3>RSA-avain</h3>
                     <ul>
-                        <li>Lasketaan kaksi suurta alkulukua (tähän löytyy tehokkaita algoritmeja)</li>
-                        <li>Lasketaan alkulukujen tulo ja pari muuta arvoa niiden perusteella</li>
+                        <li>Lasketaan kaksi suurta alkulukua</li>
+                        <li>Lasketaan alkulukujen tulo ja pari muuta arvoa</li>
                         <li>Rankasti yksinkertaistaen alkulukupari on yksityinen avain ja niiden tulo on julkinen avain
-                        <li><b>Oletus 2</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa</li>
-                            <ul>
-                                <li>Kvanttitietokoneet tulevat muuttamaan tilanteen?</li>
-                            </ul>
-                        <li>Mitä isommat alkuluvut, sitä turvallisempi avain on (1k, 2k, 4k, 8k, ...)</li>
+                        <li><b>Oletus 1</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa</li>
+                        <li>Mitä isommat alkuluvut, sitä "turvallisempi" avain on, mutta samalla raskaampi käyttää</li>
                     </ul>
                 </section>
                 <section>
@@ -98,19 +108,26 @@
                     <img src="http://www.mcseven.me/wp-content/uploads/2009/05/rsa_encryption.png" />
                 </section>
                 <section>
-                    <h3>Allekirjoitus (1/2)</h3>
+                    <h3>Allekirjoitus (1/3)</h3>
                     <img src="http://www.mcseven.me/wp-content/uploads/2009/05/rsa_signing.png" />
                 </section>
                 <section>
-                    <h3>Allekirjoitus (2/2)</h3>
+                    <h3>Allekirjoitus (2/3)</h3>
                     <ul>
-                        <li>Allekirjoitettavaa dataa ei allekirjoiteta sellaisenaan (hidasta, allekirjoitus olisi iso)</li>
-                        <li>Datasta lasketaan sen sijaan tiiviste (<i>hash, digest</i>), ja tiiviste allekirjoitetaan
+                        <li>Dataa ei allekirjoiteta sellaisenaan (hidasta, allekirjoitus olisi iso)</li>
+                        <li>Datasta lasketaan tiiviste (<i>hash, digest</i>), ja tiiviste allekirjoitetaan
                             <ul>
-                                <li>Tiivistealgoritmeja esim. MD5, SHA-1, SHA-2</li>
+                                <li>Tiivistealgoritmeja esim. MD5, SHA-1, SHA-2, ...</li>
+                                <li>Tiiviste itse ei salaa mitään</li>
                             </ul>
-                        <li>Allekirjoituksen verifioija laskee myös saamastaan datasta tiivisteen, ja vertaa sitä allekirjoitettuun tiivisteeseen</li>
-                        <li><b>Oletus 3</b>: tiivistealgoritmi on yksisuuntainen hajautusfunktio:
+                        <li>Verifioija laskee datasta tiivisteen, ja vertaa sitä allekirjoitettuun tiivisteeseen</li>
+                        <li>Jos tiivisteet mätsäävät, on allekirjoitus ehjä</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Allekirjoitus (3/3)</h3>
+                    <ul>
+                        <li><b>Oletus 3</b>: tiivistealgoritmi on "täydellinen" yksisuuntainen hajautusfunktio:
                             <ul>
                                 <li>Tiivisteestä ei voi päätellä mitään datasta, josta se on laskettu</li>
                                 <li>Pieni datan muutos aiheuttaa ison muutoksen tiivisteessä</li>
@@ -120,21 +137,26 @@
                     </ul>
                 </section>
                 <section>
-                    <h3>Varmenne</h3>
+                    <h3>Varmenne (1/2)</h3>
                     <div>
                         <ul>
                             <li><i>X.509-standardi</i> määrittelee formaatin (ASN.1-enkoodattua binääridataa)</li>
-                            <li>Varmenne on myöntäjänsä allekirjoittama dokumentti
+                            <li>Varmenne varmentaa, että myöntäjä luottaa siihen, että varmenteen omistajalla on hallussaan yksityisen ja julkisen avaimen muodostama pari</li>
+                            <li>Varmenne on (edellisen vahvistamiseksi) myöntäjänsä allekirjoittama dokumentti</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Varmenne (2/2)</h3>
+                    <div>
+                        <ul>
+                            <li>Varmenne sisältää vain julkista tietoa :
                                 <ul>
-                                    <li>Myöntäjä luottaa siihen, että varmenteen omistajalla on hallussaan julkista avainta vastaava yksityinen avain</li>
-                                </ul>   
-                            </li>
-                            <li>Varmenne sisältää vain julkista tietoa (ei yksityistä avainta):
-                                <ul>
+                                    <li>Ei yksityistä avainta</li>
                                     <li>Julkinen avain siitä avainparista, jonka varmenne varmentaa</li>
-                                    <li>Myöntäjän allekirjoitusavaimen julkinen osa</li>
+                                    <li>Myöntäjän julkinen avain</li>
                                     <li>Myöntäjän tekemä allekirjoitus</li>
-                                    <li>Metadataa (käyttötarkoitus, voimassaoloaika, sulkulistan sijainti, jne.)</li>
+                                    <li>Metadataa (varmenteen käyttötarkoitus, voimassaoloaika, sulkulistan sijainti, jne.)</li>
                                 </ul>
                             </li>
                         </ul>
@@ -144,26 +166,62 @@
                     <h3>Varmenneketju</h3>
                     <div>
                         <ul>
-                            <li>Varmenteella on aina yksi myöntäjä</li>
-                            <li>Myöntäjävarmenteellakin on (yleensä) myöntäjä</li>
+                            <li>Varmenteella on vain yksi myöntävä taho</li>
+                            <li>Myöntäjävarmenteellakin on (yleensä) myöntäjä &rarr; varmenteet muodostavat luottamusketjun</li>
                             <li>Ketjun päästä löytyy juurivarmenne, jonka allekirjoittaja on se itse (<i>self-signed</i>)</li>
-                            <li>Varmenteet juurivarmenteesta lehtivarmenteeseen (end-entity certificate) muodostavat varmenneketjun</li>
-                            <li>Varmenteen tarkistajalla pitää olla tiedossaan koko ketju</li>
+                            <li>Varmenteet juurivarmenteesta lehtivarmenteeseen (<i>end-entity certificate</i>) muodostavat varmenneketjun</li>
+                            <li>Varmenteen tarkistajalla pitää olla tiedossaan koko varmenneketju</li>
                         </ul>
                     </div>
                 </section>
                 <section>
-                    <h3>PKI (<i>Public Key Infrastructure</i>)</h3>
+                    <h3>PKI (<i>Public Key Infrastructure</i>) (1/2)</h3>
                     <ul>
                         <li>Infra, jolla mahdollistetaan varmenteiden luotettava käyttäminen ja elinkaaren hallinta</li>
                     </ul>
                     <img src="Public-Key-Infrastructure.svg" style="width: 60%; height: 60%;" />
                 </section>
                 <section>
-                    <h3>TLS (<i>Transport Layer Security</i>)</h3>
+                    <h3>PKI (<i>Public Key Infrastructure</i>) (2/2)</h3>
                     <div>
                         <ul>
-                            <li>Oli ennen SSL (<i>Secure Sockets Layer</i>)</li>
+                            <li>CA (<i>Certificate Authority</i>)
+                                <ul>
+                                    <li>Varmenteiden myöntäjä, omien varmenteidensa sulkulistojen julkaisija</li>
+                                </ul>
+                            </li>
+                            <li>RA (<i>Registration Authority</i>)
+                                <ul>
+                                    <li>Varmennepyyntöjen välittäjä, palvelee loppukäyttäjiä</li>
+                                </ul>
+                            </li>
+                            <li>VA (<i>Validation Authority</i>)
+                                <ul>
+                                    <li>Varmenteen validiteettitiedon välittäjä</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Miten varmenne hankitaan?</h3>
+                    <div>
+                        <ul>
+                            <li>Varmenteen hakija luo yksityisen ja julkisen avaimen avainvarastoon</li>
+                            <li>Varmenteen hakija luo varmennepyynnön (<i>Certificate Request, CSR</i>)</li>
+                            <li>Varmenteen hakija lähettää pyynnön RA:lle</li>
+                            <li>RA välittää pyynnön CA:lle</li>
+                            <li>CA myöntää ja toimittaa varmenteen</li>
+                            <li>Varmenteen hakija lisää varmenteen avainvarastoonsa</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>TLS (<i>Transport Layer Security</i>) (1/2)</h3>
+                    <div>
+                        <ul>
+                            <li>Ennen SSL (<i>Secure Sockets Layer</i>), nyt deprekoitu</li>
+                            <li>Salaa lennossa liikenteen (<i>https</i> yleisin)</li>
                             <li>TLS-kättelyssä client ja server lähettävät toisilleen RSA-allekirjoitettuja viestejä.</li>
                             <li>Allekirjoituksien verifiointiin tarvitaan varmenneketjuja:
                                 <ul>
@@ -171,8 +229,15 @@
                                     <li>Mutual authentication: Sekä client että server tarkistavat toistensa ketjut</li>
                                 </ul>
                             </li>
-                            <li>Itse dataliikennettä ei salata RSA:lla, koska se olisi tehotonta ja hidasta</li>
-                            <li>Kättelyssä sovitaan pienempi väliaikainen istuntoavain, jolla liikenne oikeasti salataan.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>TLS (<i>Transport Layer Security</i>) (2/2)</h3>
+                    <div>
+                        <ul>
+                            <li>Itse dataliikennettä ei salata RSA:lla, koska se vaatisi liian raskasta laskentaa (algoritmia ei ole suunniteltu tietovuon salaukseen)</li>
+                            <li>Kättelyssä sovitaan vuosalausalgoritmi sekä väliaikainen istuntoavain, jolla liikenne oikeasti salataan.</li>
                         </ul>
                     </div>
                 </section>
@@ -181,6 +246,18 @@
                     <div>
                         <ul>
                             <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                            <li>Avaimet voidaan varastoida rautaan (vahvempi) tai tiedostoihin (heikompi)
+                                <ul>
+                                    <li>Raudalla toimikorttivarmennus, tiedostoilla file system -suojaus</li>
+                                </ul>
+                            </li>
+                            <li>Yleisimmät varastoformaatit suojaamaan privaattiavaimia:
+                                <ul>
+                                    <li><b>PKCS#12</b>: se standardimpi tapa</li>
+                                    <li><b>JKS (<i>Java Key Store</i>)</b>: Javan oma tapa</li>
+                                </ul>
+                            </li>
+                            <li>Molempia formaatteja voi käyttää sekä tiedostoilla että raudalla</li>
                         </ul>
                     </div>
                 </section>
@@ -188,7 +265,10 @@
                     <h3>Java Keytool</h3>
                     <div>
                         <ul>
-                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                            <li>Tulee JDK:n mukana, komento "keytool"</li>
+                            <li>Minimaalinen setti operaatioita, joilla tulee toimeen</li>
+                            <li>Tukee JKS:ia (yllätys?), sekä rajatusti PKCS#12:a</li>
+                            <li>Kohtuullisen hyvä komentorivi-help</li>
                         </ul>
                     </div>
                 </section>
@@ -196,15 +276,44 @@
                     <h3>OpenSSL</h3>
                     <div>
                         <ul>
-                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                            <li>Linuxissa lähes aina mukana, Windowsille pitää asentaa itse</li>
+                            <li>Varsinainen monikäyttölinkkuveitsi, hiukan hankala käyttää</li>
+                            <li>Tukee vain PKCS#12:a</li>
+                            <li>Käyttö vaatii lähes aina nettimanuaalin tuekseen</li>
                         </ul>
                     </div>
                 </section>
                 <section>
-                    <h3>Entäs ne oletukset?</h3>
+                    <h3>Entäs ne oletukset? (1/2)</h3>
                     <div>
                         <ul>
-                            <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
+                            <li><b>Oletus 1</b>: Kahden suuren alkuluvun tuloa ei pystytä jakamaan tekijöihinsä järkevässä ajassa
+                                <ul>
+                                    <li>Pitää paikkansa, jos avainkoko on riittävä (vrt. suositukset)</li>
+                                    <lI>Kvanttilaskenta...?</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Entäs ne oletukset? (2/2)</h3>
+                    <div>
+                        <ul>
+                            <li><b>Oletus 2</b>: tiivistealgoritmi on "täydellinen" yksisuuntainen hajautusfunktio:
+                                <ul>
+                                    <li>Tiivistealgoritmitkin vanhenevat, kun niistä raportoidaan riittävän paljon törmäyksiä, esim. SHA-1</li>
+                                    <li>Eli suosituksia kannattaa tässäkin noudattaa</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <h3>Kiitos!</h3>
+                    <div>
+                        <ul>
+                            <li>Kysymyksiä?</li>
                         </ul>
                     </div>
                 </section>
