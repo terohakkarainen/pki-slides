@@ -67,7 +67,7 @@
                 <section>
                     <h3>Julkisen avaimen kryptografian hyödyntäminen</h3>
                     <ul>
-                        <li>Tietoliikenteen salaaminen Internetin yli</li>
+                        <li>Tietoliikenteen salaaminen Internetin yli (TLS, IPSEC)</li>
                         <li>Digitaalisen tiedon alkuperän varmistaminen: sovellusten ja päivitysten jako, dokumenttien eheys, ...</li>
                         <li>Vahva autentikaatio</li>
                     </ul>
@@ -134,7 +134,7 @@
                     <section>
                         <h3>Allekirjoitus (3/3)</h3>
                         <ul>
-                            <li><b>Oletus 3</b>: tiivistealgoritmi on "täydellinen" yksisuuntainen hajautusfunktio:
+                            <li><b>Oletus 2</b>: tiivistealgoritmi on "täydellinen" yksisuuntainen hajautusfunktio:
                                 <ul>
                                     <li>Tiivisteestä ei voi päätellä mitään datasta, josta se on laskettu</li>
                                     <li>Pieni datan muutos aiheuttaa ison muutoksen tiivisteessä</li>
@@ -230,40 +230,13 @@
                 </section>
                 <section>
                     <section>
-                        <h3>TLS (<i>Transport Layer Security</i>) (1/2)</h3>
-                        <div>
-                            <ul>
-                                <li>Ennen SSL (<i>Secure Sockets Layer</i>), nyt deprekoitu</li>
-                                <li>Salaa lennossa liikenteen (<i>https</i> yleisin)</li>
-                                <li>TLS-kättelyssä client ja server lähettävät toisilleen RSA-allekirjoitettuja viestejä.</li>
-                                <li>Allekirjoituksien verifiointiin tarvitaan varmenneketjuja:
-                                    <ul>
-                                        <li>Server-side authentication: Client tarkistaa serverin ketjun</li>
-                                        <li>Mutual authentication: Sekä client että server tarkistavat toistensa ketjut</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </section>
-                    <section>
-                        <h3>TLS (<i>Transport Layer Security</i>) (2/2)</h3>
-                        <div>
-                            <ul>
-                                <li>Itse dataliikennettä ei salata RSA:lla, koska se vaatisi liian raskasta laskentaa (algoritmia ei ole suunniteltu tietovuon salaukseen)</li>
-                                <li>Kättelyssä sovitaan vuosalausalgoritmi sekä väliaikainen istuntoavain, jolla liikenne oikeasti salataan.</li>
-                            </ul>
-                        </div>
-                    </section>
-                </section>
-                <section>
-                    <section>
                         <h3>Avainten varastointi (1/2)</h3>
                         <div>
                             <ul>
                                 <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
-                                <li>Avaimet voidaan varastoida rautaan (vahvempi) tai tiedostoihin (heikompi)
+                                <li>Avaimet voidaan varastoida rautaan (~vahvempi) tai tiedostoihin (~heikompi)
                                     <ul>
-                                        <li>Rautaa: toimikortti, USB-token, avainpalvelin</li>
+                                        <li>Rautaa (HSM): toimikortti, USB-token, avainpalvelin</li>
                                         <li>Raudalla kaksi- tai kolmiosainen autentikointi, tiedostoilla file system -suojaus + salasana</li>
                                     </ul>
                                 </li>
@@ -327,6 +300,7 @@
                                 <li>Hiukan hankalasti käytettävä monikäyttölinkkuveitsi (konversiot, protokollatestaus, asn.1-dekooderi, jne.)</li>
                                 <li>Tukee avainvarastoista vain PKCS#12:a, lisäksi avain- ja varmennetiedostojen operointia</li>
                                 <li>Käyttö vaatii lähes aina nettimanuaalin tuekseen</li>
+                                <li>Tarjoaa toimintonsa myös kirjastoina sovelluksille</li>
                             </ul>
                         </div>
                     </section>
@@ -347,6 +321,48 @@
                             <ul>
                                 <li>Luo PKCS12-keystore avaimesta ja varmenteesta: openssl pkcs12 -export -out out.p12 -inkey private.key -in cert.cer -certfile ca.cer</li>
                                 <li>Listaa PKCS12-keystoren sisältö: openssl pkcs12 -in out.p12 -nokeys</li>
+                            </ul>
+                        </div>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h3>TLS (<i>Transport Layer Security</i>) (1/3)</h3>
+                        <div>
+                            <ul>
+                                <li>Ennen SSL (<i>Secure Sockets Layer</i>), nyt deprekoitu</li>
+                                <li>TLS salaa lennossa liikenteen (<i>HTTPS</i> yleisin)</li>
+                                <li>TLS-kättelyssä client ja/tai server verifioivat toisen pään luotettavuuden varmenteiden avulla.
+                                    <ul>
+                                        <li>Server-side authentication: Client tarkistaa serverin luotettavuuden</li>
+                                        <li>Mutual authentication: Sekä client että server tarkistavat toistensa luotettavuuden</li>
+                                    </ul>
+                                </li>
+                                <li>Kättelysanomat ovat allekirjoitettuja</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>TLS (<i>Transport Layer Security</i>) (2/3)</h3>
+                        <div>
+                            <ul>
+                                <li>Server-side authentication valitaan joskus vain siksi, että saadaan TLS-salaus käyttöön</li>
+                                <li>Kättelyn osapuolilla on kaksi eri varmenne-/avainvarastoa:
+                                    <ul>
+                                        <li><i>Identity keystore:</i> osapuolen oma privaattiavain + varmenneketju</li>
+                                        <li><i>Trust keystore:</i> ne myöntäjävarmenteet, joiden myöntämiin varmenteisiin luotetaan</li>
+                                    </ul>
+                                </li>
+                                <li>Mutual authenticationissa molempissa päissä pitää olla toisen pään varmennekonfiguraatio oikein &rarr; paljon konfiguroitavaa!</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>TLS (<i>Transport Layer Security</i>) (3/3)</h3>
+                        <div>
+                            <ul>
+                                <li>Itse dataliikennettä ei salata RSA:lla, koska se vaatisi liian raskasta laskentaa (algoritmia ei ole suunniteltu tietovuon salaukseen)</li>
+                                <li>TLS-kättelyssä sovitaan vuosalausalgoritmi sekä väliaikainen istuntoavain, jolla liikenne oikeasti salataan. Istuntoavainten vaihto tapahtuu RSA-salattujen viestien avulla.</li>
                             </ul>
                         </div>
                     </section>
