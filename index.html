@@ -240,7 +240,7 @@
                                 <li>Yksityisten avainten turvallinen varastointi elintärkeää.</li>
                                 <li>Avaimet voidaan varastoida rautaan (~vahvempi) tai tiedostoihin (~heikompi)
                                     <ul>
-                                        <li>Rautaa (HSM): toimikortti, USB-token, avainpalvelin</li>
+                                        <li>Rautaa (HSM, <i>Hardware Security Module</i>): toimikortti, USB-token, avainpalvelin</li>
                                         <li>Raudalla kaksi- tai kolmiosainen autentikointi, tiedostoilla file system -suojaus + salasana</li>
                                     </ul>
                                 </li>
@@ -255,9 +255,11 @@
                                     <ul>
                                         <li><b>PKCS#12</b>: se standardi tapa</li>
                                         <li><b>JKS (<i>Java Key Store</i>)</b>: Javan oma tapa</li>
+                                        <li><b>Tiedostot</b>: avaimet ja varmenteet erillisinä</li>
                                     </ul>
                                 </li>
-                                <li>Molempia formaatteja voi käyttää sekä tiedostoilla että raudalla</li>
+                                <li>Rautataltiot mallinnetaan yleensä PKCS#12- tai JKS-muotoisina</li>
+                                <li>PKCS#12 ja JKS tukevat sekä avainten että varmenteiden talletusta</li>
                                 <li>Java tukee myös PKCS#12:n käyttöä</li>
                             </ul>
                         </div>
